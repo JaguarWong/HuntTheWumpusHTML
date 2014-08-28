@@ -34,9 +34,13 @@ function drawBoard() {
     for (x = 0; x < board.length; x++) {
         var outputL = "";
         for (y = 0; y < board[x].length; y ++) {
-            if 
+            if (board[x][y] == 9) {
+                $("#0" + x.toString() + "0" + y.toString()).addClass("wumpus");
+            };
+            if (board[x][y] == 8) {
+                $("#0" + x.toString() + "0" + y.toString()).addClass("player");
+            };
         }
-        console.log(outputL);
     }
 };
 
