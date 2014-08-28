@@ -1,0 +1,44 @@
+#main {
+    width: 450px;
+    margin: auto;
+}
+
+.cell {
+    width: 80px;
+    height: 80px;
+    border: 1px solid black;
+    margin: 0px;
+    background-color: white;
+}
+
+.row01 {
+    display: inline-block;
+}
+
+.row02 {
+    display: inline-block;
+}
+
+.row03 {
+    display: inline-block;
+}
+
+.row04 {
+    display: inline-block;
+}
+
+.row05 {
+    display: inline-block;
+}
+
+.near-wumpus {
+    background-color: salmon;
+}
+
+.player {
+    background-color: mediumturquoise;
+}
+
+.wumpus {
+    background-color: red;
+}
