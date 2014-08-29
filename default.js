@@ -1,9 +1,10 @@
-
 // Sets up the game board as a 5x5 two-dimensional array.
 var board = new Array(5);
 for (x = 0; x < board.length; x++) {
     board[x] = new Array(5);
 };
+var locationX;
+var locationY;
 
 var main = function() {
     
@@ -16,8 +17,8 @@ function placeWumpus() {
 
 // Assigns a random square the player code "8".  Ensures it is not the same square as the wumpus through recursion.
 function placePlayer() {
-    var locationX = Math.floor((Math.random() * 5));
-    var locationY = Math.floor((Math.random() * 5));
+    locationX = Math.floor((Math.random() * 5));
+    locationY = Math.floor((Math.random() * 5));
     if (board[locationX][locationY] == 9) {
         placePlayer();
     }
@@ -31,6 +32,8 @@ function resetGame() {
     for (x = 0; x < board.length; x++) {
         for (y = 0; y < board[x].length; y ++) {
             board[x][y] = 0;
+            $("#0" + x.toString() + "0" + y.toString()).removeClass("wumpus");
+            $("#0" + x.toString() + "0" + y.toString()).removeClass("player");
         }
     }
 };
@@ -51,9 +54,44 @@ function drawBoard() {
             if (board[x][y] == 8) {
                 $("#0" + x.toString() + "0" + y.toString()).addClass("player");
             };
-        }
-    }
+        };
+    };
 };
+
+$("#reset").click(function() {
+    gameTester();
+});
+
+function movePlayer(x, y) {
+    $("#0" + locationX.toString() + "0" + locationY.toString()).removeClass("player");
+    if ((locationX + x) == -1) {
+        locationX = 5;
+    }
+    else if ((locationY + y) == -1) {
+        locationY = 5;
+    }
+    else {
+        locationX += x;
+        locationY += y;
+    }
+    $("#0" + locationX.toString() + "0" + locationY.toString()).addClass("player");
+};
+
+$(document).keypress(function(e) {
+    if (e.which == 65) {
+        alert("Up Arrow");
+        // movePlayer(-1, 0);
+    }
+    if(e.which == 87) {
+        // movePlayer(0, 1);
+    }
+    if(e.which == 83) {
+        // movePlayer(1, 0);
+    }
+    if(e.which == 86) {
+        // movePlayer(0, -1);
+    }
+});
 
 function gameTester() {
     resetGame();
