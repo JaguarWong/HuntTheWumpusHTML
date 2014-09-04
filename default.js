@@ -5,6 +5,8 @@ for (x = 0; x < board.length; x++) {
 };
 var locationX;
 var locationY;
+var maxX = 7;
+var maxY = 5;
 
 var main = function() {
     
@@ -64,32 +66,59 @@ $("#reset").click(function() {
 
 function movePlayer(x, y) {
     $("#0" + locationX.toString() + "0" + locationY.toString()).removeClass("player");
-    if ((locationX + x) == -1) {
-        locationX = 5;
+    if (x == 0) {
+        moveY(y);
     }
-    else if ((locationY + y) == -1) {
-        locationY = 5;
-    }
-    else {
-        locationX += x;
-        locationY += y;
+    if (y == 0) {
+        moveX(x);
     }
     $("#0" + locationX.toString() + "0" + locationY.toString()).addClass("player");
 };
 
+function moveX (x) {
+    if ((locationX + x) == -1) {
+        locationX = 4;
+    }
+    else if ((locationX + x) == (maxX + 1)) {
+        locationX = 0;
+    }
+    else {
+        locationX += x;
+    }
+};
+
+function moveY (y) {
+    if ((locationY + y) == -1) {
+        locationY = 4;
+    }
+    else if ((locationY + y) == (maxY + 1)) {
+        locationY = 0;
+    }
+    else {
+        locationY += y;
+    }
+};
+
 $(document).keypress(function(e) {
-    if (e.which == 65) {
-        alert("Up Arrow");
-        // movePlayer(-1, 0);
+    
+    // Move player left
+    if (e.which == 97) {
+        movePlayer(-1, 0);
     }
-    if(e.which == 87) {
-        // movePlayer(0, 1);
+    
+    // Move player up
+    if(e.which == 119) {
+        movePlayer(0, -1);
     }
-    if(e.which == 83) {
-        // movePlayer(1, 0);
+    
+    // Move player right
+    if(e.which == 100) {
+        movePlayer(1, 0);
     }
-    if(e.which == 86) {
-        // movePlayer(0, -1);
+    
+    // Move player down
+    if(e.which == 115) {
+        movePlayer(0, 1);
     }
 });
 
