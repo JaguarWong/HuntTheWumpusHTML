@@ -12,12 +12,12 @@
     display: inline-block;
 }
 
-.near-wumpus {
-    background-color: salmon;
-}
-
 .player {
     background-color: mediumturquoise;
+}
+
+.near-wumpus {
+    background-color: salmon;
 }
 
 .wumpus {
