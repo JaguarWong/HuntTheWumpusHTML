@@ -1,12 +1,10 @@
 // Sets up the game board as a 5x5 two-dimensional array.
 var locationX;
 var locationY;
-var maxX = 7;
-var maxY = 5;
 
-var board = new Array(maxX + 1);
+var board = new Array(8);
 for (x = 0; x < board.length; x++) {
-    board[x] = new Array(maxY + 1);
+    board[x] = new Array(6);
 };
 
 var main = function() {
@@ -14,21 +12,21 @@ var main = function() {
 };
 
 function rowEdge(x) {
-    if (x > (maxX)) return 0;
-    else if (x < 0) return maxX;
+    if (x >= (board.length)) return 0;
+    else if (x < 0) return (board.length - 1);
     else return x;
 };
 
 function colEdge(y) {
-    if (y > (maxY)) return 0;
-    else if (y < 0) return maxY;
+    if (y > (board[0].length)) return 0;
+    else if (y < 0) return (board[0].length - 1);
     else return y;
 };
 
 // Assigns a random square the wumpus code "9"
 function placeWumpus() {
-    tempX = Math.floor(Math.random() * (maxX + 1));
-    tempY = Math.floor(Math.random() * (maxY + 1));
+    tempX = Math.floor(Math.random() * (board.length));
+    tempY = Math.floor(Math.random() * (board[0].length));
     board[tempX][tempY] = 9;
     board[rowEdge(tempX + 1)][tempY] = 7;
     board[rowEdge(tempX - 1)][tempY] = 7;
@@ -38,8 +36,8 @@ function placeWumpus() {
 
 // Assigns a random square the player code "8".  Ensures it is not the same square as the wumpus through recursion.
 function placePlayer() {
-    locationX = Math.floor((Math.random() * (maxX + 1)));
-    locationY = Math.floor((Math.random() * (maxY + 1)));
+    locationX = Math.floor((Math.random() * board.length));
+    locationY = Math.floor((Math.random() * board[0].length));
     if (board[locationX][locationY] == 9) {
         placePlayer();
     }
@@ -102,7 +100,7 @@ function moveX (x) {
     if ((locationX + x) < 0) {
         locationX = (board.length - 1);
     }
-    else if ((locationX + x) > (maxX)) {
+    else if ((locationX + x) > (board.length - 1)) {
         locationX = 0;
     }
     else {
@@ -114,7 +112,7 @@ function moveY (y) {
     if ((locationY + y) < 0) {
         locationY = (board[0].length - 1);
     }
-    else if ((locationY + y) > (maxY)) {
+    else if ((locationY + y) > (board[0].length - 1)) {
         locationY = 0;
     }
     else {
