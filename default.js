@@ -32,6 +32,13 @@ function placeWumpus() {
     board[rowEdge(tempX - 1)][tempY] = 7;
     board[tempX][colEdge(tempY + 1)] = 7;
     board[tempX][colEdge(tempY - 1)] = 7;
+    
+    // CURRENT BUG HUNT
+    
+    $("#0" + rowEdge(tempX + 1).toString() + "0" + tempY.toString()).addClass("near-wumpus");
+    $("#0" + rowEdge(tempX - 1).toString() + "0" + tempY.toString()).addClass("near-wumpus");
+    $("#0" + tempX.toString() + "0" + colEdge(tempY + 1).toString()).addClass("near-wumpus");
+    $("#0" + tempX.toString() + "0" + colEdge(tempY - 1).toString()).addClass("near-wumpus");
 };
 
 // Assigns a random square the player code "8".  Ensures it is not the same square as the wumpus through recursion.
