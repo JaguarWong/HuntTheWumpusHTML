@@ -1,25 +1,28 @@
 // Sets up the game board as a 5x5 two-dimensional array.
-var board = new Array(8);
-for (x = 0; x < board.length; x++) {
-    board[x] = new Array(6);
-};
 var locationX;
 var locationY;
 var maxX = 7;
 var maxY = 5;
+
+var board = new Array(maxX + 1);
+for (x = 0; x < board.length; x++) {
+    board[x] = new Array(maxY + 1);
+};
 
 var main = function() {
     
 };
 
 function rowEdge(x) {
-    if (x > maxX) return 0;
-    if (x < 0) return maxX;
+    if (x > (maxX)) return 0;
+    else if (x < 0) return maxX;
+    else return x;
 };
 
 function colEdge(y) {
-    if (y > maxY) return 0;
-    if (y < 0) return maxY;
+    if (y > (maxY)) return 0;
+    else if (y < 0) return maxY;
+    else return y;
 };
 
 // Assigns a random square the wumpus code "9"
@@ -96,10 +99,10 @@ function checkLocation() {
 };
 
 function moveX (x) {
-    if ((locationX + x) == -1) {
-        locationX = 4;
+    if ((locationX + x) < 0) {
+        locationX = (board.length - 1);
     }
-    else if ((locationX + x) == (maxX + 1)) {
+    else if ((locationX + x) > (maxX)) {
         locationX = 0;
     }
     else {
@@ -108,10 +111,10 @@ function moveX (x) {
 };
 
 function moveY (y) {
-    if ((locationY + y) == -1) {
-        locationY = 4;
+    if ((locationY + y) < 0) {
+        locationY = (board[0].length - 1);
     }
-    else if ((locationY + y) == (maxY + 1)) {
+    else if ((locationY + y) > (maxY)) {
         locationY = 0;
     }
     else {
