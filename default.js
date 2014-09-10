@@ -1,6 +1,7 @@
 // Sets up the game board as a 5x5 two-dimensional array.
 var locationX;
 var locationY;
+var moveOn = true;
 
 var board = new Array(8);
 for (x = 0; x < board.length; x++) {
@@ -34,11 +35,42 @@ function placeWumpus() {
     board[tempX][colEdge(tempY - 1)] = 7;
 };
 
+function checkEdges(x, y) {
+    console.log("checkEdges call on: " + x + " - " + y);
+    testCase = true;
+    if (board[x][y] != 0)
+        testCase = false;
+    if (board[rowEdge(x + 1)][y] != 0)
+        testCase = false;
+    if (board[rowEdge(x - 1)][y] != 0)
+        testCase = false;
+    if (board[x][colEdge(y + 1)] != 0)
+        testCase = false;
+    if (board[x][colEdge(y - 1)] != 0)
+        testCase = false;
+    return testCase;
+};
+
+function placePit() {
+    tempX = Math.floor(Math.random() * (board.length));
+    tempY = Math.floor(Math.random() * (board[0].length));
+    if (checkEdges(tempX, tempY) == true) {
+        board[tempX][tempY] = 6;
+        board[rowEdge(tempX + 1)][tempY] = 5;
+        board[rowEdge(tempX - 1)][tempY] = 5;
+        board[tempX][colEdge(tempY + 1)] = 5;
+        board[tempX][colEdge(tempY - 1)] = 5;
+    }
+    else {
+        placePit()
+    };
+};
+
 // Assigns a random square the player code "8".  Ensures it is not the same square as the wumpus through recursion.
 function placePlayer() {
     locationX = Math.floor((Math.random() * board.length));
     locationY = Math.floor((Math.random() * board[0].length));
-    if (board[locationX][locationY] == 9) {
+    if (board[locationX][locationY] == 9 || board[locationX][locationY] == 7) {
         placePlayer();
     }
     else {
@@ -54,6 +86,8 @@ function resetGame() {
             $("#0" + x.toString() + "0" + y.toString()).removeClass("wumpus");
             $("#0" + x.toString() + "0" + y.toString()).removeClass("player");
             $("#0" + x.toString() + "0" + y.toString()).removeClass("near-wumpus");
+            $("#0" + x.toString() + "0" + y.toString()).removeClass("pit");
+            $("#0" + x.toString() + "0" + y.toString()).removeClass("near-pit");
         }
     }
 };
@@ -68,6 +102,7 @@ function drawBoard() {
             // If square contains player, apply "player" css.
             if (board[x][y] == 8) {
                 $("#0" + x.toString() + "0" + y.toString()).addClass("player");
+                moveOn = true;
             };
         };
     };
@@ -92,8 +127,16 @@ function movePlayer(x, y) {
 function checkLocation() {
     if (board[locationX][locationY] == 7) 
         $("#0" + locationX.toString() + "0" + locationY.toString()).addClass("near-wumpus");
-    if (board[locationX][locationY] == 9) 
+    if (board[locationX][locationY] == 9) {
         $("#0" + locationX.toString() + "0" + locationY.toString()).addClass("wumpus");
+        moveOn = false;
+    }
+    if (board[locationX][locationY] == 5) 
+        $("#0" + locationX.toString() + "0" + locationY.toString()).addClass("near-pit");
+    if (board[locationX][locationY] == 6) {
+        $("#0" + locationX.toString() + "0" + locationY.toString()).addClass("pit");
+        moveOn = false;
+    }
 };
 
 function moveX (x) {
@@ -122,24 +165,27 @@ function moveY (y) {
 
 $(document).keypress(function(e) {
     
+    if (moveOn) {
+    
     // Move player left
-    if (e.which == 97) {
-        movePlayer(-1, 0);
-    }
+        if (e.which == 97) {
+            movePlayer(-1, 0);
+        }
     
     // Move player up
-    if(e.which == 119) {
-        movePlayer(0, -1);
-    }
+        if(e.which == 119) {
+            movePlayer(0, -1);
+        }
     
     // Move player right
-    if(e.which == 100) {
-        movePlayer(1, 0);
-    }
+        if(e.which == 100) {
+            movePlayer(1, 0);
+        }
     
     // Move player down
-    if(e.which == 115) {
-        movePlayer(0, 1);
+        if(e.which == 115) {
+            movePlayer(0, 1);
+        }
     }
 });
 
@@ -147,6 +193,8 @@ function gameTester() {
     resetGame();
     placeWumpus();
     placePlayer();
+    placePit();
+    placePit();
     drawBoard();
 };
 

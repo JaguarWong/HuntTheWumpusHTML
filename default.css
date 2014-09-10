@@ -23,3 +23,11 @@
 .wumpus {
     background-color: red;
 }
+
+.near-pit {
+    background-color: lightslategray;
+}
+
+.pit {
+    background-color: black;
+}
