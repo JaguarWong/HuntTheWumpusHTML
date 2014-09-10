@@ -36,7 +36,6 @@ function placeWumpus() {
 };
 
 function checkEdges(x, y) {
-    console.log("checkEdges call on: " + x + " - " + y);
     testCase = true;
     if (board[x][y] != 0)
         testCase = false;
