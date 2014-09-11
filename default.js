@@ -2,14 +2,12 @@
 var locationX;
 var locationY;
 var moveOn = true;
+var shootOn = false;
+var arrows = 0;
 
 var board = new Array(8);
 for (x = 0; x < board.length; x++) {
     board[x] = new Array(6);
-};
-
-var main = function() {
-    
 };
 
 function rowEdge(x) {
@@ -89,6 +87,7 @@ function resetGame() {
             $("#0" + x.toString() + "0" + y.toString()).removeClass("near-pit");
         }
     }
+    arrows = 1;
 };
 
 // Places all elements ont the board using jQuery.
@@ -108,19 +107,26 @@ function drawBoard() {
 };
 
 $("#reset").click(function() {
-    gameTester();
+    main();
+});
+
+$("#shoot").click(function() {
+    moveOn = !moveOn;
+    shootOn = !shootOn;
 });
 
 function movePlayer(x, y) {
-    $("#0" + locationX.toString() + "0" + locationY.toString()).removeClass("player");
-    if (x == 0) {
-        moveY(y);
+    if (moveOn) {
+        $("#0" + locationX.toString() + "0" + locationY.toString()).removeClass("player");
+        if (x == 0) {
+            moveY(y);
+        }
+        if (y == 0) {
+            moveX(x);
+        }
+        $("#0" + locationX.toString() + "0" + locationY.toString()).addClass("player");
+        checkLocation();
     }
-    if (y == 0) {
-        moveX(x);
-    }
-    $("#0" + locationX.toString() + "0" + locationY.toString()).addClass("player");
-    checkLocation();
 };
 
 function checkLocation() {
@@ -162,6 +168,50 @@ function moveY (y) {
     }
 };
 
+function shootArrow (x, y) {
+    arrows = 0;
+    if (y == 0) {
+        horShoot(x);
+    };
+    if (x == 0) {
+        vertShoot(y);
+    };
+};
+
+function horShoot(x) {
+    if ((locationX + x) < 0) {
+        if (board[board.length][locationX] == 9) youWin();
+        else youLose();
+    }
+    else if ((locationX + x) >= board.length) {
+        if (board[0][locationX] == 9) youWin();
+        else youLose();
+    }
+    else if (board[locationX + x][locationY] == 9) youWin();
+    else youLose();
+};
+
+function vertShoot(y) {
+    if ((locationY + y) < 0) {
+        if (board[locationX][board[0].length] == 9) youWin();
+        else youLose();
+    }
+    else if ((locationY + y) >= board[0].length) {
+        if (board[locationX][0] == 9) youWin();
+        else youLose();
+    }
+    else if (board[locationX][locationY + y] == 9) youWin();
+    else youLose();
+};
+
+function youWin() {
+    alert("You Win!");
+};
+
+function youLose() {
+    alert("You Lose!");
+}
+
 $(document).keypress(function(e) {
     
     if (moveOn) {
@@ -186,9 +236,31 @@ $(document).keypress(function(e) {
             movePlayer(0, 1);
         }
     }
+    else if (shootOn) {
+    
+    // Move player left
+        if (e.which == 97) {
+            shootArrow(-1, 0);
+        }
+    
+    // Move player up
+        if(e.which == 119) {
+            shootArrow(0, -1);
+        }
+    
+    // Move player right
+        if(e.which == 100) {
+            shootArrow(1, 0);
+        }
+    
+    // Move player down
+        if(e.which == 115) {
+            shootArrow(0, 1);
+        }
+    }
 });
 
-function gameTester() {
+function main() {
     resetGame();
     placeWumpus();
     placePlayer();
@@ -197,5 +269,4 @@ function gameTester() {
     drawBoard();
 };
 
-$(document).ready(gameTester);
 $(document).ready(main);
